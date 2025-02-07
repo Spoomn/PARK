@@ -1,0 +1,5 @@
+parking-backend/node_modules
+parking-frontend/node_modules
+parking-frontend/build
+*.env
+*.env.production
