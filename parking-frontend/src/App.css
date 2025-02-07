@@ -1,0 +1,232 @@
+/* App.css */
+.app-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+.app-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: #1a1a1a;
+  text-align: center;
+}
+
+.lots-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  padding: 1rem;
+}
+
+.lot-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 2rem;
+  border: 2px solid #e0e0e0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  aspect-ratio: 1/1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.lot-card:hover {
+  transform: translateY(-5px);
+  border-color: #007bff;
+  box-shadow: 0 6px 15px rgba(0, 123, 255, 0.1);
+}
+
+.lot-card h3 {
+  font-size: 1.75rem;
+  margin: 0 0 1rem;
+  color: #1a1a1a;
+}
+
+.availability {
+  font-size: 1.25rem;
+  color: #28a745;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.car-count {
+  font-size: 1rem;
+  color: #6c757d;
+  font-weight: 400;
+}
+
+.detail-view {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin: 0 1rem;
+}
+
+.back-button {
+  background: #f8f9fa;
+  border: 2px solid #007bff;
+  padding: 0.75rem 1.5rem;
+  margin-bottom: 2rem;
+  cursor: pointer;
+  color: #007bff;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  font-weight: 600;
+}
+
+.back-button:hover {
+  background: #007bff;
+  color: white;
+}
+
+.lot-details h2 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #1a1a1a;
+}
+
+.status-indicators {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.status-item {
+  padding: 1rem;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.status-item.available {
+  background: #e6f4ea;
+  color: #28a745;
+}
+
+.status-item.occupied {
+  background: #f8e8e8;
+  color: #dc3545;
+}
+
+.cars-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.car-card {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 1.5rem;
+  border-left: 4px solid #007bff;
+}
+
+.car-id {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.car-status {
+  font-size: 0.9rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.car-status.parked {
+  background: #e6f4ea;
+  color: #28a745;
+}
+
+.car-status.reserved {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.car-status.loading {
+  background: #cce5ff;
+  color: #004085;
+}
+
+.no-cars {
+  text-align: center;
+  color: #6c757d;
+  font-style: italic;
+  padding: 2rem;
+  grid-column: 1 / -1;
+}
+
+/* Animation styles remain the same */
+
+/* Animation styles */
+.fade-zoom-enter {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+.fade-zoom-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: all 300ms ease-out;
+}
+
+.fade-zoom-exit {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.fade-zoom-exit-active {
+  opacity: 0;
+  transform: scale(1.05);
+  transition: all 300ms ease-in;
+}
+
+.lots-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.lot-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid #e0e0e0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  aspect-ratio: 1/1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.lot-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.lot-card h3 {
+  font-size: 1.5rem;
+  margin: 0 0 0.5rem;
+  color: #1a1a1a;
+}
+
+.availability {
+  font-size: 1.1rem;
+  color: #28a745;
+  margin-bottom: 0.5rem;
+}
+
+.car-count {
+  font-size: 0.9rem;
+  color: #6c757d;
+}
