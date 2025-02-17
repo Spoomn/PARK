@@ -4,5 +4,10 @@
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#1e88e5",
-  "background_color": "#fafafa"
+  "background_color": "#fafafa",
+  "icons": [
+    {"src": "/parkIcon.png",
+      "sizes": "144x144",
+      "type": "image/png"}
+  ]
 }

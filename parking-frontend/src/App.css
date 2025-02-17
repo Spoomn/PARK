@@ -10,7 +10,7 @@
   font-size: 2.25rem;
   font-weight: 700;
   margin-bottom: 2rem;
-  color: #1a1a1a;
+  color: #1e88e5;
   text-align: center;
 }
 
@@ -22,10 +22,10 @@
 }
 
 .lot-card {
-  background: #ffffff;
+  background: #fafafa;
   border-radius: 12px;
   padding: 2rem;
-  border: 2px solid #e0e0e0;
+  border: 2px solid #fafafa;
   cursor: pointer;
   transition: all 0.3s ease;
   aspect-ratio: 1/1;
@@ -38,7 +38,7 @@
 
 .lot-card:hover {
   transform: translateY(-5px);
-  border-color: #007bff;
+  border-color: #43a047;
   box-shadow: 0 6px 15px rgba(0, 123, 255, 0.1);
 }
 
@@ -50,7 +50,7 @@
 
 .availability {
   font-size: 1.25rem;
-  color: #28a745;
+  color: #43a047;
   margin-bottom: 0.5rem;
   font-weight: 500;
 }
@@ -71,11 +71,11 @@
 
 .back-button {
   background: #f8f9fa;
-  border: 2px solid #007bff;
+  border: 2px solid #1e88e5;
   padding: 0.75rem 1.5rem;
   margin-bottom: 2rem;
   cursor: pointer;
-  color: #007bff;
+  color: #1e88e5;
   font-size: 1.1rem;
   border-radius: 8px;
   transition: all 0.2s ease;
@@ -83,7 +83,7 @@
 }
 
 .back-button:hover {
-  background: #007bff;
+  background: #1e88e5;
   color: white;
 }
 
@@ -107,7 +107,7 @@
 
 .status-item.available {
   background: #e6f4ea;
-  color: #28a745;
+  color: #43a047;
 }
 
 .status-item.occupied {
@@ -125,7 +125,7 @@
   background: #f8f9fa;
   border-radius: 8px;
   padding: 1.5rem;
-  border-left: 4px solid #007bff;
+  border-left: 4px solid #1e88e5;
 }
 
 .car-id {
@@ -142,7 +142,7 @@
 
 .car-status.parked {
   background: #e6f4ea;
-  color: #28a745;
+  color: #43a047;
 }
 
 .car-status.reserved {

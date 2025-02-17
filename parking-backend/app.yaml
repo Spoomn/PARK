@@ -1,11 +1,16 @@
-runtime: nodejs18
+runtime: nodejs20
 env: standard
 entrypoint: node server.js
 
+instance_class: F2
+
+automatic_scaling:
+  target_cpu_utilization: 0.65
+  min_instances: 1
+  max_instances: 5
+
 env_variables:
-  DB_USER: "projects/vision-447321/secrets/DB_USER/versions/latest"
-  DB_PASSWORD: "projects/vision-447321/secrets/DB_PASSWORD/versions/latest"
-  DB_HOST: "projects/vision-447321/secrets/DB_HOST/versions/latest"
-  DB_NAME: "projects/vision-447321/secrets/DB_NAME/versions/latest"
-  DB_PORT: "projects/vision-447321/secrets/DB_PORT/versions/latest"
-  PORT: '8080'
+  NODE_ENV: "production"
+  DB_CONNECTION_NAME: "vision-447321:us-central1:vision-db"
+  DB_NAME: "vision"
+  PORT: "8080"

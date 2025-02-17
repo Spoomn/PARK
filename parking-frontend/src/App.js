@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { CSSTransition, SwitchTransition } from 'react-transition-group';
 import './App.css';
 import { fadeZoomTransition } from './transitions';
@@ -7,10 +7,14 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 console.log('Backend URL:', BACKEND_URL);
 
 const App = () => {
+  // eslint-disable-next-line 
   const [cars, setCars] = useState([]);
   const [lots, setLots] = useState([]);
   const [selectedLot, setSelectedLot] = useState(null);
   const [view, setView] = useState('main');
+  const mainViewRef = useRef(null);
+  const detailViewRef = useRef(null);
+
 
   // Fetch data from backend
   useEffect(() => {
@@ -33,19 +37,6 @@ const App = () => {
     console.log('Selected lot:', lot);
     setView('detail');
     setSelectedLot(lot);
-
-    // Fetch cars for the selected lot
-    const fetchCars = async () => {
-      try {
-        const response = await fetch(`${BACKEND_URL}/cars?lotID=${lot.id}`);
-        const data = await response.json();
-        setCars(data);
-      } catch (error) {
-        console.error('Error fetching cars:', error);
-      }
-    };
-
-    fetchCars();
   };
 
   const handleBack = () => {
@@ -53,11 +44,12 @@ const App = () => {
     setSelectedLot(null);
   };
 
+  // eslint-disable-next-line 
   const carsInLot = cars.filter((car) => car.lotId === selectedLot?.id);
 
   return (
     <div className="app-container">
-      <h1 className="app-title">Parking Availability</h1>
+      <h1 className="app-title">Parking App for Real-time Knowledge (PARK)</h1>
 
       <SwitchTransition mode="out-in">
         <CSSTransition
@@ -65,8 +57,9 @@ const App = () => {
           timeout={300}
           classNames={fadeZoomTransition}
           unmountOnExit
+          nodeRef={view === 'main' ? mainViewRef : detailViewRef}
         >
-          <div className="view-container">
+          <div className="view-container" ref={view === 'main' ? mainViewRef : detailViewRef}>
             {view === 'main' ? (
               <div className="main-view">
                 <div className="lots-grid">
@@ -92,6 +85,7 @@ const App = () => {
               </div>
             ) : (
               <div className="detail-view">
+                <h1>Lot Details</h1>
                 <button className="back-button" onClick={handleBack}>
                   ← Back to All Lots
                 </button>
@@ -105,8 +99,8 @@ const App = () => {
                       Occupied Spaces: {selectedLot?.occupied_spots}
                     </div>
                   </div>
-                  <h3>Parked Vehicles:</h3>
-                  <div className="cars-container">
+                  {/* <h3>Parked Vehicles:</h3> */}
+                  {/* <div className="cars-container">
                     {carsInLot.length > 0 ? (
                       carsInLot.map((car) => (
                         <div key={car.id} className="car-card">
@@ -119,7 +113,7 @@ const App = () => {
                     ) : (
                       <div className="no-cars">No vehicles currently parked in this lot</div>
                     )}
-                  </div>
+                  </div> */}
                 </div>
               </div>
             )}
