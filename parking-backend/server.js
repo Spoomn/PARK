@@ -59,11 +59,13 @@ let pool;
 
 async function startServer() {
   await initializeConfig();
-  if (!process.env.DB_CONNECTION_NAME) {
-    console.error("❌ ERROR: DB_CONNECTION_NAME is not defined. Check your app.yaml.");
-    process.exit(1);
+  if (process.env.NODE_ENV === 'production') {
+    if (!process.env.DB_CONNECTION_NAME) {
+      console.error("❌ ERROR: DB_CONNECTION_NAME is not defined. Check your app.yaml.");
+      process.exit(1);
+    }
   }
-  const dbSocketPath = `/cloudsql/${process.env.DB_CONNECTION_NAME}`;
+    const dbSocketPath = `/cloudsql/${process.env.DB_CONNECTION_NAME}`;
   console.log(`🔗 Connecting to database at ${dbSocketPath}`);
   const useSSL = process.env.DB_SSL === "true" ? { rejectUnauthorized: false } : false;
 

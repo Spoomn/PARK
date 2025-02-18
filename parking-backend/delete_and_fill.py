@@ -5,16 +5,23 @@ DB_PARAMS = {
     "dbname": "vision",
     "user": "postgres",
     "password": "postgres",
-    "host": "127.0.0.1",
-    "port": "5432",  # Default PostgreSQL port
+    "host": "35.188.13.8",
+    "port": "5432",
+    "connect_timeout": 20,
 }
 
 # Data to be reinserted
 parking_lots_data = [
-    (1, 'A', 100, 50),
-    (2, 'B', 80, 20),
-    (3, 'C', 120, 100),
-    (4, 'D', 60, 30),
+    (1, 'North Lot', 67, 65),
+    (2, 'South Lot', 88, 20),
+    (3, 'East Lot', 34, 25),
+    (4, 'West Lot', 65, 65),
+    (5, 'Central Lot', 45, 10),
+    (6, 'Underground Lot', 100, 90),
+    (7, 'Rooftop Lot', 50, 5),
+    (8, 'Overflow Lot', 120, 100),
+    (9, 'Employee Lot', 30, 10),
+    (10, 'Visitor Lot', 40, 20),
 ]
 
 try:
@@ -22,28 +29,15 @@ try:
     conn = psycopg2.connect(**DB_PARAMS)
     cur = conn.cursor()
 
-    # Check if the table exists
     cur.execute("""
-        SELECT EXISTS (
-            SELECT FROM information_schema.tables 
-            WHERE table_schema = 'public' 
-            AND table_name = 'parking_lots'
+        CREATE TABLE IF NOT EXISTS parking_lots (
+            id INT PRIMARY KEY,
+            name VARCHAR(50) NOT NULL,
+            total_spots INT NOT NULL,
+            occupied_spots INT NOT NULL
         );
     """)
-    table_exists = cur.fetchone()[0]
-
-    if not table_exists:
-        # Create the parking_lots table if it doesn't exist
-        cur.execute("""
-            CREATE TABLE parking_lots (
-                id INT PRIMARY KEY,
-                name VARCHAR(50) NOT NULL,
-                total_spots INT NOT NULL,
-                occupied_spots INT NOT NULL
-            );
-        """)
-        conn.commit()  # Commit table creation
-        print("Created table 'parking_lots'.")
+    conn.commit()
 
     # Check if the computed column 'open_spots' exists
     cur.execute("""
@@ -78,7 +72,8 @@ try:
 except Exception as e:
     print(f"Error: {e}")
 finally:
-    if 'cur' in locals() and cur:
+    if 'cur' in locals() and cur is not None:
         cur.close()
-    if 'conn' in locals() and conn:
+    if 'conn' in locals() and conn is not None:
         conn.close()
+

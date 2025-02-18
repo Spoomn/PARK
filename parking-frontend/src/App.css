@@ -14,6 +14,191 @@
   text-align: center;
 }
 
+.app-subtitle {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  color: #1a1a1a;
+  text-align: center;
+}
+
+.refresh-button {
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+}
+
+.refresh-icon {
+  width: 40px;
+  height: 40px;
+  transition: transform 0.25s ease-in-out;
+  color: #1a1a1a;
+
+}
+
+.refresh-button:hover .refresh-icon{
+  transform: rotate(287deg);
+  color: #43a047;
+}
+
+@media (max-width: 768px) {
+  .refresh-icon {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .refresh-icon {
+    width: 25px;
+    height: 25px;
+  }
+}
+
+.occupancy-bar-container {
+  width: 100%;
+  margin: 1rem 0;
+}
+
+.occupancy-bar {
+  width: 100%;
+  height: 20px;
+  background: #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.occupancy-filled {
+  height: 100%;
+  background: #43a047;
+  transition: width 0.3s ease-in-out;
+}
+
+.controls-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+
+.search-bar {
+  flex: 1;
+  padding: 8px 12px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.search-bar:focus {
+  border-color: #1e88e5;
+}
+
+.filter-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.filter-icon {
+  width: 32px;
+  height: 32px;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.filter-button:hover .filter-icon {
+  opacity: 0.7;
+}
+
+.filter-menu {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  background: #ffffff;
+  padding: 0.5rem;
+  z-index: 1;
+  left: auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.filter-menu button{
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  font-size: 1rem;
+  text-align: left;
+}
+
+.filter-menu button:hover{
+  background: #f8f9fa;
+}
+
+.filter-menu button.active{
+  background: #f8f9fa;
+}
+
+.filter-type {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  padding: 0.5rem;
+}
+
+.refresh-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.refresh-icon {
+  width: 32px;
+  height: 32px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.refresh-button:hover .refresh-icon {
+  transform: rotate(180deg);
+}
+
+.view-container.main-view .refresh-button {
+  display: flex;
+}
+
+@media (max-width: 768px) {
+  .controls-container {
+    flex-direction: row;
+    gap: 5px;
+  }
+
+  .search-bar {
+    font-size: 0.9rem;
+  }
+
+  .filter-icon,
+  .refresh-icon {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+
 .lots-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -229,4 +414,25 @@
 .car-count {
   font-size: 0.9rem;
   color: #6c757d;
+}
+
+.footer{
+  text-align: center;
+  margin-top: 2rem;
+  color: #6c757d;
+}
+
+.footer button {
+  background: #1e88e5;
+  color: white;
+  border: 2px solid #1e88e5;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.footer button:hover {
+  background: none;
+  color: #1e88e5;
 }
