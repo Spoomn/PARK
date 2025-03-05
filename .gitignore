@@ -3,3 +3,5 @@ parking-frontend/node_modules
 parking-frontend/build
 *.env
 *.env.production
+*.MP4
+*.avi
