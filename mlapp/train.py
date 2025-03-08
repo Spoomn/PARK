@@ -3,20 +3,20 @@ import os
 import traceback
 import os
 
-EPOCHS = 10
+EPOCHS = 5
 BATCH = 16
-IMGSZ = 960
+IMGSZ = 640
 WORKERS = 8
 
-MIN_EPOCHS = 10
+MIN_EPOCHS = 5
 RETRY_LIMIT = 1
 
 DATASET = "A"
-if DATASET == "A":
-    DATA = "/home/spoomn/datasets/Car-Detection/kaggle_dataset.yaml"
-if DATASET == "B":
-    DATA = "/home/spoomn/datasets/Vehicle-Detection/dataset-vehicles/maryam_dataset.yaml"
-
+# if DATASET == "A":
+#     DATA = "/home/spoomn/datasets/Car-Detection/kaggle_dataset.yaml"
+# if DATASET == "B":
+#     DATA = "/home/spoomn/datasets/Vehicle-Detection/dataset-vehicles/maryam_dataset.yaml"
+DATA = "/Users/spencerream/Vehicle_Detection_Image_Dataset/data.yaml"
 model = YOLO("yolo11n_custom.pt")
 
 retry_count = 0
@@ -30,7 +30,7 @@ while retry_count < RETRY_LIMIT and EPOCHS >= MIN_EPOCHS:
             batch=BATCH,
             imgsz=IMGSZ,
             workers=WORKERS,
-            device="0",
+            # device="0",
         )
 
         print("Training completed successfully.")
@@ -58,9 +58,11 @@ else:
     if DATASET == "A":
         CAR_INDEX = 2
         data_name = "Kaggle" #source: https://www.kaggle.com/code/yusufsahin1/vehicle-detection-using-yolo-11
-    else:
+    elif DATASET == "B":
         data_name = "Maryam" #source: https://github.com/MaryamBoneh/Vehicle-Detection/blob/main/dataset.yaml
-    
+    else:
+        data_name = "Sample"
+
     num_cars = sum(1 for obj in detected_objects.boxes.cls if obj == CAR_INDEX)
     print(f"Number of cars detected: {num_cars}")
     os.makedirs("output", exist_ok=True)
