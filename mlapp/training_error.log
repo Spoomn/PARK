@@ -3402,3 +3402,257 @@ Traceback (most recent call last):
   File "/home/spoomn/venv/lib/python3.11/site-packages/ultralytics/engine/trainer.py", line 568, in get_dataset
     raise RuntimeError(emojis(f"Dataset '{clean_url(self.args.data)}' error ❌ {e}")) from e
 RuntimeError: Dataset 'home/spoomn/datasets/Vehicle-Detection/dataset-vehicles/maryam_dataset.yaml' error ❌ 'home/spoomn/datasets/Vehicle-Detection/dataset-vehicles/maryam_dataset.yaml' does not exist
+
+
+Attempt 1 failed:
+Traceback (most recent call last):
+  File "/Users/spencerream/PARK/mlapp/train.py", line 27, in <module>
+    train_results = model.train(
+        data=DATA,
+    ...<4 lines>...
+        device="0",
+    )
+  File "/Users/spencerream/pySpoomn/lib/python3.13/site-packages/ultralytics/engine/model.py", line 804, in train
+    self.trainer = (trainer or self._smart_load("trainer"))(overrides=args, _callbacks=self.callbacks)
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/spencerream/pySpoomn/lib/python3.13/site-packages/ultralytics/engine/trainer.py", line 104, in __init__
+    self.device = select_device(self.args.device, self.args.batch)
+                  ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/spencerream/pySpoomn/lib/python3.13/site-packages/ultralytics/utils/torch_utils.py", line 192, in select_device
+    raise ValueError(
+    ...<7 lines>...
+    )
+ValueError: Invalid CUDA 'device=0' requested. Use 'device=cpu' or pass valid CUDA device(s) if available, i.e. 'device=0' or 'device=0,1,2,3' for Multi-GPU.
+
+torch.cuda.is_available(): False
+torch.cuda.device_count(): 0
+os.environ['CUDA_VISIBLE_DEVICES']: None
+See https://pytorch.org/get-started/locally/ for up-to-date torch install instructions if no CUDA devices are seen by torch.
+
+
+
+Attempt 1 failed:
+Traceback (most recent call last):
+  File "/Users/spencerream/PARK/mlapp/train.py", line 27, in <module>
+    train_results = model.train(
+        data=DATA,
+    ...<4 lines>...
+        device="0",
+    )
+  File "/Users/spencerream/pySpoomn/lib/python3.13/site-packages/ultralytics/engine/model.py", line 804, in train
+    self.trainer = (trainer or self._smart_load("trainer"))(overrides=args, _callbacks=self.callbacks)
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/spencerream/pySpoomn/lib/python3.13/site-packages/ultralytics/engine/trainer.py", line 104, in __init__
+    self.device = select_device(self.args.device, self.args.batch)
+                  ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/spencerream/pySpoomn/lib/python3.13/site-packages/ultralytics/utils/torch_utils.py", line 192, in select_device
+    raise ValueError(
+    ...<7 lines>...
+    )
+ValueError: Invalid CUDA 'device=0' requested. Use 'device=cpu' or pass valid CUDA device(s) if available, i.e. 'device=0' or 'device=0,1,2,3' for Multi-GPU.
+
+torch.cuda.is_available(): False
+torch.cuda.device_count(): 0
+os.environ['CUDA_VISIBLE_DEVICES']: None
+See https://pytorch.org/get-started/locally/ for up-to-date torch install instructions if no CUDA devices are seen by torch.
+
+
+
+Attempt 1 failed:
+Traceback (most recent call last):
+  File "/Users/spencerream/PARK/mlapp/train.py", line 33, in <module>
+    device=cpu,
+           ^^^
+NameError: name 'cpu' is not defined
+
+
+Attempt 1 failed:
+Traceback (most recent call last):
+  File "/Users/spencerream/PARK/mlapp/train.py", line 33, in <module>
+    device=cpu,
+           ^^^
+NameError: name 'cpu' is not defined
+
+
+Attempt 1 failed:
+Traceback (most recent call last):
+  File "/Users/spencerream/pySpoomn/lib/python3.13/site-packages/ultralytics/engine/trainer.py", line 564, in get_dataset
+    data = check_det_dataset(self.args.data)
+  File "/Users/spencerream/pySpoomn/lib/python3.13/site-packages/ultralytics/data/utils.py", line 316, in check_det_dataset
+    file = check_file(dataset)
+  File "/Users/spencerream/pySpoomn/lib/python3.13/site-packages/ultralytics/utils/checks.py", line 522, in check_file
+    raise FileNotFoundError(f"'{file}' does not exist")
+FileNotFoundError: '/Vehicle_Detection_Image_Dataset/data.yaml' does not exist
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/spencerream/PARK/mlapp/train.py", line 27, in <module>
+    train_results = model.train(
+        data=DATA,
+    ...<4 lines>...
+        # device="0",
+    )
+  File "/Users/spencerream/pySpoomn/lib/python3.13/site-packages/ultralytics/engine/model.py", line 804, in train
+    self.trainer = (trainer or self._smart_load("trainer"))(overrides=args, _callbacks=self.callbacks)
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/spencerream/pySpoomn/lib/python3.13/site-packages/ultralytics/engine/trainer.py", line 134, in __init__
+    self.trainset, self.testset = self.get_dataset()
+                                  ~~~~~~~~~~~~~~~~^^
+  File "/Users/spencerream/pySpoomn/lib/python3.13/site-packages/ultralytics/engine/trainer.py", line 568, in get_dataset
+    raise RuntimeError(emojis(f"Dataset '{clean_url(self.args.data)}' error ❌ {e}")) from e
+RuntimeError: Dataset '/Vehicle_Detection_Image_Dataset/data.yaml' error ❌ '/Vehicle_Detection_Image_Dataset/data.yaml' does not exist
+
+
+Attempt 1 failed:
+Traceback (most recent call last):
+  File "/Users/spencerream/pySpoomn/lib/python3.13/site-packages/ultralytics/engine/trainer.py", line 564, in get_dataset
+    data = check_det_dataset(self.args.data)
+  File "/Users/spencerream/pySpoomn/lib/python3.13/site-packages/ultralytics/data/utils.py", line 376, in check_det_dataset
+    raise FileNotFoundError(m)
+FileNotFoundError: 
+Dataset '../../Vehicle_Detection_Image_Dataset/data.yaml' images not found ⚠️, missing path '/Users/spencerream/mlapp/Vehicle_Detection_Image_Dataset/valid/images'
+Note dataset download directory is '/Users/spencerream/mlapp/YOLO-Parking-Spot/datasets'. You can update this in '/Users/spencerream/Library/Application Support/Ultralytics/settings.json'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/spencerream/PARK/mlapp/train.py", line 27, in <module>
+    train_results = model.train(
+        data=DATA,
+    ...<4 lines>...
+        # device="0",
+    )
+  File "/Users/spencerream/pySpoomn/lib/python3.13/site-packages/ultralytics/engine/model.py", line 804, in train
+    self.trainer = (trainer or self._smart_load("trainer"))(overrides=args, _callbacks=self.callbacks)
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/spencerream/pySpoomn/lib/python3.13/site-packages/ultralytics/engine/trainer.py", line 134, in __init__
+    self.trainset, self.testset = self.get_dataset()
+                                  ~~~~~~~~~~~~~~~~^^
+  File "/Users/spencerream/pySpoomn/lib/python3.13/site-packages/ultralytics/engine/trainer.py", line 568, in get_dataset
+    raise RuntimeError(emojis(f"Dataset '{clean_url(self.args.data)}' error ❌ {e}")) from e
+RuntimeError: Dataset '../../Vehicle_Detection_Image_Dataset/data.yaml' error ❌ 
+Dataset '../../Vehicle_Detection_Image_Dataset/data.yaml' images not found ⚠️, missing path '/Users/spencerream/mlapp/Vehicle_Detection_Image_Dataset/valid/images'
+Note dataset download directory is '/Users/spencerream/mlapp/YOLO-Parking-Spot/datasets'. You can update this in '/Users/spencerream/Library/Application Support/Ultralytics/settings.json'
+
+
+Attempt 1 failed:
+Traceback (most recent call last):
+  File "/Users/spencerream/pySpoomn/lib/python3.13/site-packages/ultralytics/engine/trainer.py", line 564, in get_dataset
+    data = check_det_dataset(self.args.data)
+  File "/Users/spencerream/pySpoomn/lib/python3.13/site-packages/ultralytics/data/utils.py", line 376, in check_det_dataset
+    raise FileNotFoundError(m)
+FileNotFoundError: 
+Dataset '../../Vehicle_Detection_Image_Dataset/data.yaml' images not found ⚠️, missing path '/Vehicle_Detection_Image_Dataset/valid/images'
+Note dataset download directory is '/Users/spencerream'. You can update this in '/Users/spencerream/Library/Application Support/Ultralytics/settings.json'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/spencerream/PARK/mlapp/train.py", line 27, in <module>
+    train_results = model.train(
+        data=DATA,
+    ...<4 lines>...
+        # device="0",
+    )
+  File "/Users/spencerream/pySpoomn/lib/python3.13/site-packages/ultralytics/engine/model.py", line 804, in train
+    self.trainer = (trainer or self._smart_load("trainer"))(overrides=args, _callbacks=self.callbacks)
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/spencerream/pySpoomn/lib/python3.13/site-packages/ultralytics/engine/trainer.py", line 134, in __init__
+    self.trainset, self.testset = self.get_dataset()
+                                  ~~~~~~~~~~~~~~~~^^
+  File "/Users/spencerream/pySpoomn/lib/python3.13/site-packages/ultralytics/engine/trainer.py", line 568, in get_dataset
+    raise RuntimeError(emojis(f"Dataset '{clean_url(self.args.data)}' error ❌ {e}")) from e
+RuntimeError: Dataset '../../Vehicle_Detection_Image_Dataset/data.yaml' error ❌ 
+Dataset '../../Vehicle_Detection_Image_Dataset/data.yaml' images not found ⚠️, missing path '/Vehicle_Detection_Image_Dataset/valid/images'
+Note dataset download directory is '/Users/spencerream'. You can update this in '/Users/spencerream/Library/Application Support/Ultralytics/settings.json'
+
+
+Attempt 1 failed:
+Traceback (most recent call last):
+  File "/Users/spencerream/pySpoomn/lib/python3.13/site-packages/ultralytics/engine/trainer.py", line 564, in get_dataset
+    data = check_det_dataset(self.args.data)
+  File "/Users/spencerream/pySpoomn/lib/python3.13/site-packages/ultralytics/data/utils.py", line 316, in check_det_dataset
+    file = check_file(dataset)
+  File "/Users/spencerream/pySpoomn/lib/python3.13/site-packages/ultralytics/utils/checks.py", line 522, in check_file
+    raise FileNotFoundError(f"'{file}' does not exist")
+FileNotFoundError: '/Vehicle_Detection_Image_Dataset/data.yaml' does not exist
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/spencerream/PARK/mlapp/train.py", line 27, in <module>
+    train_results = model.train(
+        data=DATA,
+    ...<4 lines>...
+        # device="0",
+    )
+  File "/Users/spencerream/pySpoomn/lib/python3.13/site-packages/ultralytics/engine/model.py", line 804, in train
+    self.trainer = (trainer or self._smart_load("trainer"))(overrides=args, _callbacks=self.callbacks)
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/spencerream/pySpoomn/lib/python3.13/site-packages/ultralytics/engine/trainer.py", line 134, in __init__
+    self.trainset, self.testset = self.get_dataset()
+                                  ~~~~~~~~~~~~~~~~^^
+  File "/Users/spencerream/pySpoomn/lib/python3.13/site-packages/ultralytics/engine/trainer.py", line 568, in get_dataset
+    raise RuntimeError(emojis(f"Dataset '{clean_url(self.args.data)}' error ❌ {e}")) from e
+RuntimeError: Dataset '/Vehicle_Detection_Image_Dataset/data.yaml' error ❌ '/Vehicle_Detection_Image_Dataset/data.yaml' does not exist
+
+
+Attempt 1 failed:
+Traceback (most recent call last):
+  File "/Users/spencerream/pySpoomn/lib/python3.13/site-packages/ultralytics/engine/trainer.py", line 564, in get_dataset
+    data = check_det_dataset(self.args.data)
+  File "/Users/spencerream/pySpoomn/lib/python3.13/site-packages/ultralytics/data/utils.py", line 316, in check_det_dataset
+    file = check_file(dataset)
+  File "/Users/spencerream/pySpoomn/lib/python3.13/site-packages/ultralytics/utils/checks.py", line 522, in check_file
+    raise FileNotFoundError(f"'{file}' does not exist")
+FileNotFoundError: '../Vehicle_Detection_Image_Dataset/data.yaml' does not exist
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/spencerream/PARK/mlapp/train.py", line 27, in <module>
+    train_results = model.train(
+        data=DATA,
+    ...<4 lines>...
+        # device="0",
+    )
+  File "/Users/spencerream/pySpoomn/lib/python3.13/site-packages/ultralytics/engine/model.py", line 804, in train
+    self.trainer = (trainer or self._smart_load("trainer"))(overrides=args, _callbacks=self.callbacks)
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/spencerream/pySpoomn/lib/python3.13/site-packages/ultralytics/engine/trainer.py", line 134, in __init__
+    self.trainset, self.testset = self.get_dataset()
+                                  ~~~~~~~~~~~~~~~~^^
+  File "/Users/spencerream/pySpoomn/lib/python3.13/site-packages/ultralytics/engine/trainer.py", line 568, in get_dataset
+    raise RuntimeError(emojis(f"Dataset '{clean_url(self.args.data)}' error ❌ {e}")) from e
+RuntimeError: Dataset '../Vehicle_Detection_Image_Dataset/data.yaml' error ❌ '../Vehicle_Detection_Image_Dataset/data.yaml' does not exist
+
+
+Attempt 1 failed:
+Traceback (most recent call last):
+  File "/Users/spencerream/pySpoomn/lib/python3.13/site-packages/ultralytics/engine/trainer.py", line 564, in get_dataset
+    data = check_det_dataset(self.args.data)
+  File "/Users/spencerream/pySpoomn/lib/python3.13/site-packages/ultralytics/data/utils.py", line 316, in check_det_dataset
+    file = check_file(dataset)
+  File "/Users/spencerream/pySpoomn/lib/python3.13/site-packages/ultralytics/utils/checks.py", line 522, in check_file
+    raise FileNotFoundError(f"'{file}' does not exist")
+FileNotFoundError: 'Vehicle_Detection_Image_Dataset/data.yaml' does not exist
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/spencerream/PARK/mlapp/train.py", line 27, in <module>
+    train_results = model.train(
+        data=DATA,
+    ...<4 lines>...
+        # device="0",
+    )
+  File "/Users/spencerream/pySpoomn/lib/python3.13/site-packages/ultralytics/engine/model.py", line 804, in train
+    self.trainer = (trainer or self._smart_load("trainer"))(overrides=args, _callbacks=self.callbacks)
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/spencerream/pySpoomn/lib/python3.13/site-packages/ultralytics/engine/trainer.py", line 134, in __init__
+    self.trainset, self.testset = self.get_dataset()
+                                  ~~~~~~~~~~~~~~~~^^
+  File "/Users/spencerream/pySpoomn/lib/python3.13/site-packages/ultralytics/engine/trainer.py", line 568, in get_dataset
+    raise RuntimeError(emojis(f"Dataset '{clean_url(self.args.data)}' error ❌ {e}")) from e
+RuntimeError: Dataset 'Vehicle_Detection_Image_Dataset/data.yaml' error ❌ 'Vehicle_Detection_Image_Dataset/data.yaml' does not exist
