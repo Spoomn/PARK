@@ -12,6 +12,7 @@ const REFRESH_INTERVAL = 30000;
 
 const App = () => {
   const [lots, setLots] = useState([]);
+  const [error, setError] = useState(null);
   const [selectedLot, setSelectedLot] = useState(null);
   const [view, setView] = useState('main');
   const [searchTerm, setSearchTerm] = useState('');
@@ -23,12 +24,17 @@ const App = () => {
   const fetchLots = async () => {
     try {
       console.log('Fetching data...');
+      setError(null);
       const response = await fetch(`${BACKEND_URL}/vision`);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch data: ${response.statusText}`);
+      }
       const data = await response.json();
       console.log('Fetched parking lots:', data);
       setLots(data);
     } catch (error) {
       console.error('Error fetching parking lots:', error);
+      setError(`Failed to fetch parking lot data: ${error.message}`);
     }
   };
 
@@ -45,11 +51,13 @@ const App = () => {
     setSelectedLot(lot);
     window.scrollTo({ top: 0, behavior: 'smooth' });
     setSearchTerm('');
+    fetchLots();
   };
 
   const handleBack = () => {
     setView('main');
     setSelectedLot(null);
+    fetchLots();
   };
 
   const filteredLots = lots.filter((lot) => {
@@ -109,11 +117,14 @@ const App = () => {
           <div className="view-container" ref={view === 'main' ? mainViewRef : detailViewRef}>
             {view === 'main' ? (
               <div className="main-view">
-                
+                {error ? (
+                  <div className="error-message">{error}</div>
+                ):(
                 <div className="lots-grid">
                   {sortedLots.map((lot) => {
                     const available_spots = lot.total_spots - lot.occupied_spots;
-                    const textColor = available_spots === 0 ? '#ee2c24' : available_spots < 15 ? '#f4c217' : '#43a047';
+                    const availablePercentage = (available_spots / lot.total_spots) * 100;
+                    const textColor = availablePercentage < 5 ? '#ee2c24' : availablePercentage < 25 ? '#f4c217' : '#43a047';
                     return (
                       <div 
                         key={lot.id}
@@ -129,35 +140,37 @@ const App = () => {
                         </div>
                       </div>
                     );
-                  })}
-                </div>
+                    })}
+                  </div>
+                )}
               </div>
-            ) : (
-              <div className="detail-view">
-                <button className="back-button" onClick={handleBack}>
-                  ← Back to All Lots
-                </button>
-                <h1>Lot Details: {selectedLot?.name}</h1>
-                <div className="lot-details">
-                  <div className="occupancy-bar-container">
+                ) : (
+                  <div className="detail-view">
+                  <button className="back-button" onClick={handleBack}>
+                    ← Back to All Lots
+                  </button>
+                  <h1>Lot Details: {selectedLot?.name}</h1>
+                  <div className="lot-details">
+                    <div className="occupancy-bar-container">
                     {(selectedLot?.total_spots) - (selectedLot?.occupied_spots)} spots available
                     <div className="occupancy-bar">
                       <div
-                        className="occupancy-filled"
-                        style={{
-                          width: `${(selectedLot?.occupied_spots / selectedLot?.total_spots) * 100}%`,
-                          backgroundColor: (selectedLot?.total_spots - selectedLot?.occupied_spots) === 0 ? '#ee2c24' : (selectedLot?.total_spots - selectedLot?.occupied_spots) < 15 ? '#f4c217' : '#43a047'}}
+                      className="occupancy-filled"
+                      style={{
+                        width: `${(selectedLot?.occupied_spots / selectedLot?.total_spots) * 100}%`,
+                        backgroundColor: ((selectedLot?.total_spots - selectedLot?.occupied_spots) / selectedLot?.total_spots) * 100 < 5 ? '#ee2c24' : ((selectedLot?.total_spots - selectedLot?.occupied_spots) / selectedLot?.total_spots) * 100 < 25 ? '#f4c217' : '#43a047'
+                      }}
                       ></div>
                     </div>
+                  </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-            )}
-            <div className="footer">
-              {/* <p>Love it or hate it?</p>
-              <a href="https://forms.gle/L4bjuXgSr434B9oX8">
-                <button className="survey-button">Take Survey</button>
-              </a> */}
+                )}
+                <div className="footer">
+                  <p>Love it or hate it?</p>
+                  <a href="https://forms.gle/L4bjuXgSr434B9oX8">
+                  <button className="survey-button">Take Survey</button>
+                  </a>
               <p>
                 Made with <span role='img' aria-label='heart emoji'>❤️</span> by Spoomn Inc.
               </p>

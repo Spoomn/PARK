@@ -5,7 +5,7 @@ DB_PARAMS = {
     "dbname": "vision",
     "user": "postgres",
     "password": "postgres",
-    "host": "35.188.13.8",
+    "host": "localhost",
     "port": "5432",
     "connect_timeout": 20,
 }
