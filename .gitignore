@@ -1,6 +1,7 @@
 parking-backend/node_modules
 parking-frontend/node_modules
 parking-frontend/build
+mlapp/output
 *.env
 *.env.production
 *.MP4

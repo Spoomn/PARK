@@ -2,7 +2,7 @@ import ultralytics
 import os
 
 model = ultralytics.YOLO("yolo11n.pt")
-input_image = "alt_lot.JPG"
+input_image = "aerial-view-of-car-parking-top-v.jpg"
 # extract the name of the image
 
 
