@@ -3,7 +3,7 @@ import { getAuth } from 'firebase/auth';
 import { getFirestore, collection, doc, setDoc, getDoc, updateDoc } from 'firebase/firestore';
 
 const firebaseConfig = {
-    apiKey: "AIzaSyBixL-jOsMlykjXRbYoaakGIm7KXCbuQL0",
+    apiKey: "AIzaSyADEu8Z-NXPkQnKb2Dh_V5VXHvRgEZ1N0Q",
     authDomain: "vision-447321.firebaseapp.com",
     projectId: "vision-447321",
     storageBucket: "vision-447321.firebasestorage.app",
