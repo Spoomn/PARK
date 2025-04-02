@@ -1,6 +1,7 @@
 parking-backend/node_modules
 parking-frontend/node_modules
 parking-frontend/build
+parking-frontend/src/firebase.js
 mlapp/output
 *.env
 *.env.production
