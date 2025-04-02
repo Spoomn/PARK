@@ -33,6 +33,75 @@
   text-align: center;
 }
 
+.auth-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.user-info-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.user-info {
+  color: #1e88e5;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.logout-button {
+  background: #f8f9fa;
+  border: 2px solid #1e88e5;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #1e88e5;
+  transition: all 0.2s ease;
+}
+
+.logout-button:hover {
+  background: #1e88e5;
+  color: white;
+}
+
+.logout-button img {
+  height: 25px;
+  width: 25px;
+}
+
+
+.login-button {
+  background: #f8f9fa;
+  border: 2px solid #1e88e5;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #1e88e5;
+  transition: all 0.2s ease;
+}
+
+.login-button:hover {
+  background: #1e88e5;
+  color: white;
+}
+
+.login-button img {
+  height: 25px;
+  width: 25px;
+}
+
 .refresh-button {
   background: none;
   border: none;
@@ -68,6 +137,35 @@
     width: 25px;
     height: 25px;
   }
+}
+
+.name-details{
+  display: flex;
+  flex-direction: row;
+}
+
+.map-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  margin: 5px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #1a73e8;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+}
+
+.map-link:hover {
+  background-color: #d2e3fc;
+  
+  align-items: center;
+}
+
+.map-pin-icon {
+  width: 30px;
+  height: 30px;
 }
 
 .occupancy-bar-container {
@@ -259,12 +357,71 @@
   font-weight: 400;
 }
 
+.favorite-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  z-index: 10;
+}
+
+.favorite-button.visible{
+  opacity: 1;
+}
+
+.favorite-button img {
+  width: 24px;
+  height: 24px;
+  transition: transform 0.2s ease;
+}
+
+.favorite-button img:hover {
+  transform: scale(1.1);
+}
+
+
+
+@media (min-width: 768px) {
+  .favorite-button {
+    opacity: 0;
+  }
+
+  .lot-card:hover .favorite-button {
+    opacity: 1;
+  }
+}
+
+
+@media (max-width: 767px) {
+  .favorite-button {
+    opacity: 1 !important;
+    width: 40px;
+    height: 40px;
+  }
+}
+
+
+
 .detail-view {
   background: #ffffff;
   border-radius: 12px;
   padding: 2rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   margin: 0 1rem;
+  position: relative;
+}
+
+.detail-view .detail-view h1 {
+  margin-top: 3rem;
+}
+
+.photo-upload-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .back-button {
@@ -284,6 +441,36 @@
   background: #1e88e5;
   color: white;
 }
+
+
+.detail-view {
+  position: relative; /* Required for positioning */
+}
+
+.add-photo-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: #f8f9fa;
+  border: 2px solid #1e88e5;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  color: #1e88e5;
+  border-radius: 8px;
+  size: large;
+  transition: all 0.2s ease;
+}
+
+.add-photo-button:hover {
+  background-color: #1e88e5;
+  color: #fff;
+}
+
+.detail-view .add-photo-button:hover {
+  background-color: #1e88e5;
+  color: white;
+}
+
 
 .lot-details h2 {
   font-size: 2rem;
@@ -436,10 +623,10 @@
 }
 
 .footer button {
-  background: #1e88e5;
+  background: #28a745;
   color: white;
-  border: 2px solid #1e88e5;
   border-radius: 10px;
+  padding: 0.5rem 1rem;
   cursor: pointer;
   font-size: 1rem;
   font-weight: 600;
@@ -447,5 +634,5 @@
 
 .footer button:hover {
   background: none;
-  color: #1e88e5;
+  color: #28a745;
 }

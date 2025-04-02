@@ -1,0 +1,10 @@
+opencv-python
+ultralytics
+onnxruntime
+google-cloud-storage
+cloud-sql-python-connector
+google-cloud-pubsub
+psycopg2
+numpy
+pg8000
+python-dotenv

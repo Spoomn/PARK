@@ -3,21 +3,27 @@ import os
 import traceback
 import os
 
-EPOCHS = 5
+EPOCHS = 50
 BATCH = 16
 IMGSZ = 640
 WORKERS = 8
 
-MIN_EPOCHS = 5
-RETRY_LIMIT = 1
+MIN_EPOCHS = 50
+RETRY_LIMIT = 5
 
-DATASET = "A"
-# if DATASET == "A":
-#     DATA = "/home/spoomn/datasets/Car-Detection/kaggle_dataset.yaml"
-# if DATASET == "B":
-#     DATA = "/home/spoomn/datasets/Vehicle-Detection/dataset-vehicles/maryam_dataset.yaml"
-DATA = "/Users/spencerream/Vehicle_Detection_Image_Dataset/data.yaml"
-model = YOLO("yolo11n_custom.pt")
+DATASET = "B"
+if DATASET == "A":
+    DATA = "/home/spoomn/datasets/Car-Detection/kaggle_dataset.yaml"
+if DATASET == "B":
+    DATA = "/home/spoomn/datasets/Vehicle-Detection/dataset-vehicles/maryam_dataset.yaml"
+if DATASET == "C":
+    DATA = "/home/spoomn/datasets/roboflow/data.yaml"
+if DATASET == "D":
+    DATA = "/home/spoomn/datasets/"
+# DATA = "/Users/spencerream/Vehicle_Detection_Image_Dataset/data.yaml"
+
+model_name = "yolo11m"
+model = YOLO(f"{model_name}.pt")
 
 retry_count = 0
 while retry_count < RETRY_LIMIT and EPOCHS >= MIN_EPOCHS:
@@ -30,7 +36,7 @@ while retry_count < RETRY_LIMIT and EPOCHS >= MIN_EPOCHS:
             batch=BATCH,
             imgsz=IMGSZ,
             workers=WORKERS,
-            # device="0",
+            device="0",
         )
 
         print("Training completed successfully.")
@@ -51,7 +57,7 @@ while retry_count < RETRY_LIMIT and EPOCHS >= MIN_EPOCHS:
 if retry_count == RETRY_LIMIT:
     print("All retry attempts failed. Check training_error.log for details.")
 else:
-    results = model("parking_lot.JPEG")
+    results = model("alt_lot.JPG")
     results[0].show()
     detected_objects = results[0]
     CAR_INDEX = 0
@@ -60,6 +66,9 @@ else:
         data_name = "Kaggle" #source: https://www.kaggle.com/code/yusufsahin1/vehicle-detection-using-yolo-11
     elif DATASET == "B":
         data_name = "Maryam" #source: https://github.com/MaryamBoneh/Vehicle-Detection/blob/main/dataset.yaml
+    elif DATASET == "C":
+        CAR_INDEX = 1
+        data_name = "Roboflow"
     else:
         data_name = "Sample"
 
@@ -67,9 +76,9 @@ else:
     print(f"Number of cars detected: {num_cars}")
     os.makedirs("output", exist_ok=True)
 
-    results[0].save(f"output/trained_{data_name}_{EPOCHS}_{BATCH}_{IMGSZ}_{WORKERS}.jpg")
+    results[0].save(f"output/{data_name}_trained_{EPOCHS}_{BATCH}_{IMGSZ}_{WORKERS}_{model_name}.jpg")
 
     path = model.export(format="onnx")
 
-    print(f"Saved detection results to output/trained_{data_name}_{EPOCHS}_{BATCH}_{IMGSZ}_{WORKERS}.jpg")
+    print(f"Saved detection results to output/ALT_{data_name}_trained_{EPOCHS}_{BATCH}_{IMGSZ}_{WORKERS}_{model_name}.jpg")
     print(f"Exported model to {path}")

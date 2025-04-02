@@ -1,4 +1,5 @@
 import psycopg2
+from datetime import datetime,timezone
 
 # Database connection parameters
 DB_PARAMS = {
@@ -10,18 +11,12 @@ DB_PARAMS = {
     "connect_timeout": 20,
 }
 
+
 # Data to be reinserted
 parking_lots_data = [
-    (1, 'North Lot', 67, 65),
-    (2, 'South Lot', 88, 20),
-    (3, 'East Lot', 34, 25),
-    (4, 'West Lot', 65, 65),
-    (5, 'Central Lot', 45, 10),
-    (6, 'Underground Lot', 100, 90),
-    (7, 'Rooftop Lot', 50, 5),
-    (8, 'Overflow Lot', 120, 100),
-    (9, 'Employee Lot', 30, 10),
-    (10, 'Visitor Lot', 40, 20),
+    (1, 'Lot M','North of the M. Anthony Burns Arena', 194, 0, 37.10258117904099, -113.56745668648611),
+    (2, 'Lot S', 'South of the Smith Computer Center', 57, 0, 37.10068226414395, -113.56793518252735),
+    (3, 'Bank Lot', "East of Zion's Bank on St. George Blvd.", 57, 0, 37.10947796454334, -113.582033255159),
 ]
 
 try:
@@ -30,42 +25,38 @@ try:
     cur = conn.cursor()
 
     cur.execute("""
+                DROP TABLE parking_lots"""
+                )
+    conn.commit()
+
+    cur.execute("""
         CREATE TABLE IF NOT EXISTS parking_lots (
             id INT PRIMARY KEY,
             name VARCHAR(50) NOT NULL,
+            subtitle VARCHAR(100) NOT NULL,
             total_spots INT NOT NULL,
-            occupied_spots INT NOT NULL
+            occupied_spots INT NOT NULL,
+            open_spots INT GENERATED ALWAYS AS (total_spots - occupied_spots) STORED,
+            last_updated TIMESTAMPTZ DEFAULT NOW(),
+            latitude DOUBLE PRECISION,
+            longitude DOUBLE PRECISION
         );
     """)
     conn.commit()
 
-    # Check if the computed column 'open_spots' exists
-    cur.execute("""
-        SELECT column_name FROM information_schema.columns 
-        WHERE table_name = 'parking_lots' AND column_name = 'open_spots';
-    """)
-    column_exists = cur.fetchone()
-
-    if not column_exists:
-        # Add the computed column (only once)
-        cur.execute("""
-            ALTER TABLE parking_lots 
-            ADD COLUMN open_spots INT GENERATED ALWAYS AS (total_spots - occupied_spots) STORED;
-        """)
-        conn.commit()  # Commit column addition
-        print("Added computed column 'open_spots'.")
-
     # Delete existing data
     cur.execute("DELETE FROM parking_lots;")
-    conn.commit()  # Commit deletion
+    conn.commit() 
 
-    # Reinsert the dummy data
-    insert_query = """
-        INSERT INTO parking_lots (id, name, total_spots, occupied_spots) 
-        VALUES (%s, %s, %s, %s);
-    """
-    cur.executemany(insert_query, parking_lots_data)
-    conn.commit()  # Commit inserted data
+    now = datetime.now(timezone.utc)
+    enriched_data = [(*lot, now) for lot in parking_lots_data]
+    cur.executemany("""
+                    INSERT INTO parking_lots(
+                    id, name, subtitle, total_spots, occupied_spots, latitude, longitude, last_updated
+                    )
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                    """, enriched_data)
+    conn.commit()
 
     print("Data reset successfully!")
 

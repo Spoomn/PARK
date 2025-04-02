@@ -1,15 +1,32 @@
-const express = require('express');
-const { Pool } = require('pg');
-const cors = require('cors');
-const dotenv = require('dotenv');
-const { SecretManagerServiceClient } = require('@google-cloud/secret-manager');
-const isProduction = process.env.NODE_ENV === 'production';
+import express from 'express';
+import multer from 'multer';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import pkg from 'pg';
+const { Pool } = pkg;
+import { Storage } from '@google-cloud/storage';
+import { SecretManagerServiceClient } from '@google-cloud/secret-manager';
+dotenv.config();
 
+const isProduction = process.env.NODE_ENV === 'production';
+const version = process.env.VERSION || '1.0.0';
 const envFile = process.env.NODE_ENV === 'production' ? '.env.production' : '.env';
 dotenv.config({ path: envFile });
 
 const app = express();
 const port = process.env.PORT || 8080;
+console.log(`Starting server on port: ${port}`);
+
+// Initialize GCS
+const storageConfig = {};
+if (process.env.NODE_ENV !== 'production' && process.env.GOOGLE_APPLICATION_CREDENTIALS) {
+  storageConfig.keyFilename = process.env.GOOGLE_APPLICATION_CREDENTIALS;
+}
+const storage = new Storage(storageConfig);
+
+
+const multerStorage = multer.memoryStorage();
+const upload = multer({ storage: multerStorage });
 
 async function initializeConfig() {
   if (process.env.NODE_ENV === 'production') {
@@ -64,7 +81,7 @@ async function startServer() {
       process.exit(1);
     }
   }
-    const dbSocketPath = `/cloudsql/${process.env.DB_CONNECTION_NAME}`;
+  const dbSocketPath = `/cloudsql/${process.env.DB_CONNECTION_NAME}`;
   console.log(`🔗 Connecting to database at ${dbSocketPath}`);
   const useSSL = process.env.DB_SSL === "true" ? { rejectUnauthorized: false } : false;
 
@@ -77,7 +94,23 @@ async function startServer() {
       ssl: isProduction ? useSSL : false,
   });
 
-  app.use(cors());
+  if (!isProduction) {
+    // Development: allow all origins
+    app.use(cors());
+    console.log("🌱 CORS: Development mode - allowing all origins.");
+  } else {
+    
+    // Production: restrict to specific frontend origin
+    app.use(cors({
+      origin: 'https://vision-447321.web.app',
+      methods: ['GET', 'POST', 'PUT', 'DELETE'],
+      allowedHeaders: ['Content-Type', 'Authorization'],
+      credentials: true
+    }));
+    console.log("🔒 CORS: Production mode - allowing only official frontend.");
+  }
+  
+
   app.use(express.json());
 
   // Test database connection
@@ -103,9 +136,71 @@ async function startServer() {
     }
   });
 
+  // API route to upload a photo to GCS
+  app.post('/upload_photo', upload.single('image'), async (req, res) => {
+    try {
+      const lotName = req.body.lotName;
+      if (!req.file || !lotName) {
+        return res.status(400).json({ error: 'Missing image or lotName parameter' });
+      }
+  
+      const timestamp = new Date().toISOString().replace(/[:.-]/g, '');
+      const gcsFilename = `${lotName}/${timestamp}_${req.file.originalname}`;
+      const metadata = {
+        contentType: req.file.mimetype,
+        metadata: {
+          "lot-name": lotName
+        }
+      };
+            
+      const bucket = storage.bucket(process.env.BUCKET_NAME);
+      const blob = bucket.file(gcsFilename);
+  
+      const stream = blob.createWriteStream({
+        metadata
+      });
+      
+  
+      stream.on('error', err => {
+        console.error('GCS Stream Error:', err);
+        if (!res.headersSent){
+          res.status(500).json({ error: 'Failed to upload to GCS' });
+        }
+      });
+  
+      stream.on('finish', async () => {
+        try {
+          try {
+            await blob.makePublic();
+          } catch (err) {
+            console.warn("⚠️ Warning: Could not make file public. Proceeding without error.");
+          }
+          
+          if (!res.headersSent){
+          res.status(200).json({
+            message: 'Upload successful',
+            url: `https://storage.googleapis.com/${process.env.BUCKET_NAME}/${gcsFilename}`,
+          });
+        }
+          res.end();
+        } catch (err) {
+          console.error("❌ Response Error:", err);
+          if (!res.headersSent){
+            res.status(500).json({ error: "Failed to finalize upload response." });
+          }
+        }
+      });
+      stream.end(req.file.buffer);
+    } catch (error) {
+      console.error('Upload Endpoint Error:', error);
+      if (!res.headersSent) {
+        res.status(500).json({ error: 'Internal Server Error' });
+      }
+    }
+  });
+  
   app.get('/', (req, res) => {
-    res.send('Hello from Parking Backend!');
-    console.log('Hello from Parking Backend!');
+    res.send(`Hello from Parking Backend version ${process.env.VERSION}`);
   });
 
   app.listen(port, '0.0.0.0', () => {

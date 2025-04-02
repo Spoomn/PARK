@@ -1,22 +1,40 @@
 import psycopg2
 
-# Database connection parameters
-DB_PARAMS = {
-    "dbname": "vision",
-    "user": "postgres",
-    "password": "postgres",
-    "host": "localhost",
-    "port": "5432",
-    "connect_timeout": 20,
-}
+
+from google.cloud.sql.connector import Connector
+INSTANCE_CONNECTION_NAME = "vision-447321:us-central1:vision-db"
+DB_USER = "postgres"
+DB_PASSWORD = "postgres"
+DB_NAME = "vision"
+
+def connect_with_connector():
+
+    connector = Connector()
+    conn = connector.connect(
+        INSTANCE_CONNECTION_NAME, 
+        "pg8000",
+        user=DB_USER,
+        password=DB_PASSWORD,
+        db=DB_NAME,
+        port=5432,
+    )
+    return conn
+
+# # Database connection parameters
+# DB_PARAMS = {
+#     "dbname": "vision",
+#     "user": "postgres",
+#     "password": "postgres",
+#     "host": "localhost",
+#     "port": "5432",
+#     "connect_timeout": 20,
+# }
 
 def get_parking_lots(cursor):
-    """Fetches available parking lots from the database."""
     cursor.execute("SELECT id, name, total_spots FROM parking_lots;")
     return cursor.fetchall()
 
 def update_occupied_spots(cursor, conn, lot_identifier, num_cars, total_spots):
-    """Updates the occupied spots for the selected lot."""
     if num_cars > total_spots:
         print("Error: Number of cars exceeds total available spots. Update canceled.")
         return
@@ -37,7 +55,8 @@ def update_occupied_spots(cursor, conn, lot_identifier, num_cars, total_spots):
 
 def main():
     try:
-        conn = psycopg2.connect(**DB_PARAMS)
+        conn = connect_with_connector()
+        # conn = psycopg2.connect(**DB_PARAMS)
         cur = conn.cursor()
         
         lots = get_parking_lots(cur)

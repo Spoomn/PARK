@@ -6,3 +6,12 @@ mlapp/output
 *.env.production
 *.MP4
 *.avi
+psql_instructions.md
+parking-backend/*.md
+mlapp/*.md
+mlapp/*/*.md
+Dockerfile
+/utahtech
+/output
+*.pt
+*.onnx
