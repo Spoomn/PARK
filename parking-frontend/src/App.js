@@ -5,8 +5,6 @@ import { fadeZoomTransition } from './transitions';
 import pinIcon from './pin.svg';
 import refreshIcon from './refresh.svg';
 import filterIcon from './filter-list.svg';
-import logoutIcon from './logout.svg';
-import loginIcon from './login.svg';
 // import favorite from './favorite.svg';
 // import unfavorite from './unfavorite.svg';
 
@@ -32,6 +30,7 @@ const App = () => {
   const [filterOpen, setFilterOpen] = useState(false);
   const [user, setUser] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
   // const [favoriteLots, setFavoriteLots] = useState([]);
   const mainViewRef = useRef(null);
   const detailViewRef = useRef(null);
@@ -219,27 +218,53 @@ const App = () => {
     const diffDays = Math.floor(diffHours / 24);
     return `Updated ${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
   };
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("darkMode");
+    if (savedTheme === "true") setDarkMode(true);
+  }, []);
+  
+  useEffect(() => {
+    localStorage.setItem("darkMode", darkMode);
+  }, [darkMode]);
+
+  useEffect(() => {
+    if (darkMode) {
+      document.body.classList.add("dark");
+    } else {
+      document.body.classList.remove("dark");
+    }
+  }, [darkMode]);
+  
+  
   
   
   return (
-    <div className="app-container">
-      <h1 className="app-title">PARK</h1>
-      <h2 className='app-subtitle'>Parking App for Real-time Knowledge</h2>
+    <div className={`app-container ${darkMode ? 'dark' : ''}`}>
+      <div>
+        <h1 className="app-title">PARK</h1>
+        <h2 className='app-subtitle'>Parking App for Real-time Knowledge</h2>
+      </div>
       <div className="auth-container">
         {user ? (
           <div className='user-info-container'>
+            
             <div className='user-info'>
               {user.displayName}
             </div>
             <button className='logout-button' onClick={handleLogout}>
-              <img src={logoutIcon} alt='Logout' className='logout-icon' />
+              Logout
             </button>
           </div>
         ) : (
           <button className='login-button' alt='Login with Google' onClick={handleLogin}>
-            <img src={loginIcon} alt='Login' className='login-icon' />
+            Log In
           </button>
         )}
+        <button className="theme-toggle" onClick={() => setDarkMode(!darkMode)}>
+        {darkMode ? '☀️' : '🌙'}
+      </button>
+
       </div>
       {view === 'main' && (
         <div className="controls-container">
@@ -333,9 +358,9 @@ const App = () => {
                     ← Back to All Lots
                   </button>
                   {isAdmin && (
-                    <div className='photo-upload-controls'>
+                    <div>
                       <button className='add-photo-button' onClick={handlePhotoUploadClick}>
-                        +
+                        + Upload New Photo
                       </button>
                       <input
                         ref={fileInputRef}
@@ -356,7 +381,7 @@ const App = () => {
                   </div>
                   <div className="lot-details">
                     <div className="occupancy-bar-container">
-                    {(selectedLot?.total_spots) - (selectedLot?.occupied_spots)} spots available
+                    {(selectedLot?.total_spots) - (selectedLot?.occupied_spots)} / {(selectedLot?.total_spots)} spots available
                     <div className="occupancy-bar">
                       <div
                       className="occupancy-filled"
@@ -374,12 +399,13 @@ const App = () => {
                 </div>
                 )}
                 <div className="footer">
+
                   <p>Love it or hate it?</p>
                   <a href="https://forms.gle/L4bjuXgSr434B9oX8">
                     <button className="survey-button">Leave Feedback</button>
                   </a>
               <p>
-                Made with <span role='img' aria-label='heart emoji'>❤️</span> by Spoomn Inc.
+                Made with <span role='img' aria-label='heart emoji'>❤️</span> by <a href="https://github.com/Spoomn" style={{ textDecoration: "none" }}>Spoomn</a> Inc.
               </p>
             </div>
           </div>

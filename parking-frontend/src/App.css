@@ -4,7 +4,18 @@
   max-width: 1200px;
   margin: 0 auto;
   min-height: 100vh;
+
 }
+body{
+  transition: all .5s;
+}
+
+body.dark {
+  background-color: #121212;
+  color: #f0f0f0;
+  transition: all .5s;
+}
+
 
 .error-message {
   background-color: #ffdddd;
@@ -53,8 +64,10 @@
   font-weight: 600;
 }
 
-.logout-button {
+.logout-button, .login-button {
   background: #f8f9fa;
+  position:relative;
+  margin-bottom: 5px;
   border: 2px solid #1e88e5;
   border-radius: 8px;
   padding: 0.5rem 1rem;
@@ -77,20 +90,6 @@
   width: 25px;
 }
 
-
-.login-button {
-  background: #f8f9fa;
-  border: 2px solid #1e88e5;
-  border-radius: 8px;
-  padding: 0.5rem 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: #1e88e5;
-  transition: all 0.2s ease;
-}
 
 .login-button:hover {
   background: #1e88e5;
@@ -210,6 +209,11 @@
   border-color: #1e88e5;
 }
 
+.app-container.dark .search-bar{
+  background-color: #1e1e1e;
+  border: #121212;
+}
+
 .filter-button {
   background: none;
   border: none;
@@ -267,6 +271,11 @@
   padding: 0.5rem;
 }
 
+.app-container.dark .filter-button{
+  border-radius: 5px;
+  background-color: #333;
+}
+
 .refresh-button {
   background: none;
   border: none;
@@ -274,6 +283,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.app-container.dark .refresh-button{
+  border-radius: 5px;
+  background-color: #333;
 }
 
 .refresh-icon {
@@ -403,14 +417,45 @@
   }
 }
 
+.app-container.dark{
+  background-color: #121212;
+  color: #f0f0f0;
+  transition: all .5s;
+
+}
+
+.app-container.dark .lot-card {
+  background-color: #1e1e1e;
+  border-color: #333;
+}
+
+.app-container.dark h3,
+.app-container.dark .search-bar,
+.app-container.dark .filter-button,
+.app-container.dark .filter-button,
+.app-container.dark .app-subtitle {
+  color: white;
+}
+
+.app-container.dark .login-button,
+.app-container.dark .logout-button,
+.app-container.dark .detail-view,
+.app-container.dark .survey-button {
+  background-color: #333;
+  color: #f0f0f0;
+}
+
+
+
 
 
 .detail-view {
   background: #ffffff;
+  position: relative;
   border-radius: 12px;
   padding: 2rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  margin: 0 1rem;
+
   position: relative;
 }
 
@@ -428,7 +473,7 @@
   background: #f8f9fa;
   border: 2px solid #1e88e5;
   padding: 0.75rem 1.5rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   cursor: pointer;
   color: #1e88e5;
   font-size: 1.1rem;
@@ -442,23 +487,16 @@
   color: white;
 }
 
-
-.detail-view {
-  position: relative; /* Required for positioning */
-}
-
 .add-photo-button {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
   background: #f8f9fa;
   border: 2px solid #1e88e5;
   padding: 0.75rem 1.5rem;
   cursor: pointer;
   color: #1e88e5;
+  font-size: 1.1rem;
   border-radius: 8px;
-  size: large;
   transition: all 0.2s ease;
+  font-weight: 600;
 }
 
 .add-photo-button:hover {
@@ -614,6 +652,34 @@
 .car-count {
   font-size: 0.9rem;
   color: #6c757d;
+}
+
+.theme-toggle{
+  margin-bottom: 5px;
+  margin-left: 2px;
+  padding: 0.5rem .5rem;
+  background-color: #004085;
+  border-radius: 8px;
+  border: 2px solid #1e88e5;
+  position:relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all .5s;
+}
+
+.theme-toggle:hover{
+  background-color: #1e88e5;
+}
+
+.app-container.dark .theme-toggle
+{
+  background-color: #6c757d;
+}
+
+.app-container.dark .theme-toggle:hover{
+  background-color: #333;
 }
 
 .footer{

@@ -101,12 +101,17 @@ def download_blob(bucket_name, source_blob_name, destination_file_name):
 def get_latest_image_path(bucket_name):
     storage_client = storage.Client()
     bucket = storage_client.bucket(bucket_name)
+    image_name = os.environ.get("IMAGE_NAME")
+    if not image_name:
+        raise ValueError("IMAGE_NAME environment variable not set")
+    
+    print(f"📦 Received IMAGE_NAME: {os.environ.get('IMAGE_NAME')}")
 
     blobs = list(bucket.list_blobs());
-
+    image_extensions = ('.jpg', '.jpeg', '.png', '.bmp', '.webp', '.tiff')
 
     image_blobs = sorted(
-        [blob for blob in blobs if blob.name.lower().endswith(".jpg") and not blob.name.endswith("/")],
+        [blob for blob in blobs if blob.name.lower().endswith(image_extensions) and not blob.name.endswith("/")],
         key=lambda b: b.updated,
         reverse=True
     )
@@ -116,7 +121,7 @@ def get_latest_image_path(bucket_name):
 
     latest_image_path = f"gs://{bucket_name}/{latest_blob.name}"
     print(f"✅ Latest image found: {latest_image_path}")
-    return latest_image_path
+    return f"gs://{bucket_name}/{image_name}"
 
 def format_lot_name(lot_name):
     return lot_name.replace("_", " ").replace("-", " ").title().strip()
@@ -173,7 +178,7 @@ def main(model_path_gcs):
         print("🛠 Running YOLO detection...")
         results = model(temp_image.name)
         detected_objects = results[0]
-        VEHICLE_CLASSES = {2, 3, 7}
+        VEHICLE_CLASSES = {3,4,5,8,9} 
         num_vehicles = sum(1 for obj in detected_objects.boxes.cls.tolist() if obj in VEHICLE_CLASSES)
 
     elif temp_model.name.endswith(".onnx"):
@@ -188,7 +193,7 @@ def main(model_path_gcs):
     print("✅ Database update complete!")
 
 if __name__ == "__main__":
-    model_path_gcs = "gs://yolo11n-bucket/yolo/v1/yolo11x.pt" 
+    model_path_gcs = "gs://yolo11n-bucket/yolo/v2/best.pt" 
 
     # print(f"🛠 Running with model: {args.model_path_gcs}, parking lot: {args.lot_name}")
     print(f"🛠 Running with model: {model_path_gcs}")

@@ -16,3 +16,4 @@ Dockerfile
 /output
 *.pt
 *.onnx
+/home/spoomn/school/spr25/PARK/parking-frontend/src/firebase.js
