@@ -6,14 +6,12 @@
   min-height: 100vh;
 
 }
-body{
-  transition: all .5s;
-}
+
 
 body.dark {
   background-color: #121212;
   color: #f0f0f0;
-  transition: all .5s;
+  transition: all .2s;
 }
 
 
@@ -77,7 +75,7 @@ body.dark {
   align-items: center;
   gap: 0.5rem;
   color: #1e88e5;
-  transition: all 0.2s ease;
+  transition: all 0.5s;
 }
 
 .logout-button:hover {
@@ -193,6 +191,7 @@ body.dark {
   justify-content: space-between;
   gap: 10px;
   margin-bottom: 1rem;
+  transition: all 2s;
 }
 
 .search-bar {
@@ -321,6 +320,12 @@ body.dark {
   }
 }
 
+.map-container {
+  margin-top: 20px;
+  width: 100%;
+  transform: translateY(0px);
+}
+
 
 .lots-grid {
   display: grid;
@@ -333,9 +338,9 @@ body.dark {
   background: #fafafa;
   border-radius: 12px;
   padding: 2rem;
-  border: 2px solid #fafafa;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  border: 2px solid #e0e0e0;
+  /* cursor: pointer; */
+  transition: all 0.2s ease;
   aspect-ratio: 1/1;
   display: flex;
   flex-direction: column;
@@ -346,11 +351,32 @@ body.dark {
   max-width: 275px;
 }
 
-.lot-card:hover {
+.see-details-button{
+  background: #1e88e5;
+  color: white;
+  border-width: 1px;
+  border-color: none;
+  border-radius: 10px;
+  margin: 1rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all .2s;
+}
+
+.see-details-button:hover{
+  background: none;
+  color: #1e88e5;
+  border-width: 1px;
+  border-color: #1e88e5;
+}
+
+/* .lot-card:hover {
   transform: translateY(-5px);
   border-color: #43a047;
   box-shadow: 0 6px 15px rgba(0, 123, 255, 0.1);
-}
+} */
 
 .lot-card h3 {
   font-size: 1.75rem;
@@ -586,7 +612,6 @@ body.dark {
   grid-column: 1 / -1;
 }
 
-/* Animation styles remain the same */
 
 /* Animation styles */
 .fade-zoom-enter {
@@ -611,31 +636,6 @@ body.dark {
   transition: all 300ms ease-in;
 }
 
-.lots-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-}
-
-.lot-card {
-  background: #ffffff;
-  border-radius: 12px;
-  padding: 1.5rem;
-  border: 1px solid #e0e0e0;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  aspect-ratio: 1/1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.lot-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
 
 .lot-card h3 {
   font-size: 1.5rem;
@@ -696,9 +696,37 @@ body.dark {
   cursor: pointer;
   font-size: 1rem;
   font-weight: 600;
+  transition: all .2s;
 }
 
 .footer button:hover {
   background: none;
   color: #28a745;
+}
+
+
+.view-toggle button {
+  margin-bottom: 5px;
+  margin-left: 2px;
+  padding: 0.5rem .5rem;
+  background-color: #43a047;
+  border-radius: 8px;
+  border: 0px solid #1e88e5;
+  position:relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all .5s;
+}
+
+.view-toggle-icon {
+  width: 28px;
+  height: 28px;
+  transition: transform 0.2s ease;
+  filter: brightness(0) invert(1);
+}
+
+.view-toggle-icon:hover {
+  transform: scale(1.1);
 }

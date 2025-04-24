@@ -2,7 +2,7 @@ import ultralytics
 import os
 import numpy as np
 
-model = ultralytics.YOLO("/home/spoomn/runs/detect/train/weights/best.pt")
+model = ultralytics.YOLO("/home/spoomn/runs/detect/train2/weights/best.pt")
 input_image = "/home/spoomn/school/spr25/PARK/utahtech/bank2.png"
 
 base_name_with_extension = os.path.basename(input_image)

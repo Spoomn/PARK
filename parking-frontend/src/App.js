@@ -5,22 +5,27 @@ import { fadeZoomTransition } from './transitions';
 import pinIcon from './pin.svg';
 import refreshIcon from './refresh.svg';
 import filterIcon from './filter-list.svg';
+import MapView from './MapView';
+import mapIcon from './map.svg';
+import tileIcon from './tile.svg';
+
 // import favorite from './favorite.svg';
 // import unfavorite from './unfavorite.svg';
 
 import { auth } from './firebase';
 import { onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
-// import { db, doc, getDoc, setDoc, userDoc, updateDoc } from './firebase';
+
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 console.log('Backend URL:', BACKEND_URL);
-
+const UT_MAP_KEY = process.env.REACT_APP_UT_MAP_KEY;
+console.log('UT API key:', UT_MAP_KEY)
 const REFRESH_INTERVAL = 30000;
-
 const ADMIN_EMAILS = ["spenceream@gmail.com",]
 
 
 const App = () => {
+  const [viewMode, setViewMode] = useState('tiles'); // or 'map'
   const [lots, setLots] = useState([]);
   const [error, setError] = useState(null);
   const [selectedLot, setSelectedLot] = useState(null);
@@ -35,9 +40,9 @@ const App = () => {
   const mainViewRef = useRef(null);
   const detailViewRef = useRef(null);
   const fileInputRef = useRef(null);
-  
-  // eslint-disable-next-line
-  const handlePhotoUploadClick = () => {
+
+
+const handlePhotoUploadClick = () => {
     fileInputRef.current.click();
   };
 
@@ -68,6 +73,8 @@ const App = () => {
         }
     }
   };
+
+
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -236,6 +243,12 @@ const App = () => {
     }
   }, [darkMode]);
   
+  const mapRef = useRef(null);
+  useEffect(() => {
+    if (mapRef.current) {
+      console.log('map loaded:', mapRef.current)
+    }
+  }, [])
   
   
   
@@ -264,6 +277,16 @@ const App = () => {
         <button className="theme-toggle" onClick={() => setDarkMode(!darkMode)}>
         {darkMode ? '☀️' : '🌙'}
       </button>
+      <div className="view-toggle">
+        <button onClick={() => setViewMode(viewMode === 'tiles' ? 'map' : 'tiles')}>
+          <img
+            title={viewMode === 'tiles' ? 'Switch to Map View' : 'Switch to Tile View'}
+            src={viewMode === 'tiles' ? mapIcon : tileIcon}
+            alt={viewMode === 'tiles' ? 'Switch to Map View' : 'Switch to Tile View'}
+            className="view-toggle-icon"
+            />
+        </button>
+      </div>
 
       </div>
       {view === 'main' && (
@@ -316,47 +339,41 @@ const App = () => {
               <div className="main-view">
                 {error ? (
                   <div className="error-message">{error}</div>
-                ):(
-                <div className="lots-grid">
-                  {sortedLots.map((lot) => {
-                    const available_spots = lot.total_spots - lot.occupied_spots;
-                    // const isFavorite = favoriteLots.includes(lot.id);
-                    const availablePercentage = (available_spots / lot.total_spots) * 100;
-                    const textColor = availablePercentage < 5 ? '#ee2c24' : availablePercentage < 25 ? '#f4c217' : '#43a047';
-                    return (
-                      <div 
-                        key={lot.id}
-                        className="lot-card"
-                        onClick={() => handleLotClick(lot)}
-                      >
-                        <h3>{lot.name}</h3>
-                        <p>{lot.subtitle}</p>
-                        {/* <button 
-                          className={`favorite-button ${isFavorite ? 'visible' : ''}`} 
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            toggleFavorite(lot.id);
-                          }}
-                        >
-                            <img src={isFavorite ? favorite : unfavorite} alt="Favorite"></img>
-                          </button> */}
-                        <div className="availability" style={{ color: textColor }}>
-                          {available_spots} spots available
+                ) : viewMode === 'tiles' ? (
+                  <div className="lots-grid">
+                    {sortedLots.map((lot) => {
+                      const available_spots = lot.total_spots - lot.occupied_spots;
+                      const availablePercentage = (available_spots / lot.total_spots) * 100;
+                      const textColor =
+                        availablePercentage < 5 ? '#ee2c24' :
+                        availablePercentage < 25 ? '#f4c217' :
+                        '#43a047';
+                      return (
+                        <div key={lot.id} className="lot-card">
+                          <h3>{lot.name}</h3>
+                          <p>{lot.subtitle}</p>
+                          <div className="availability" style={{ color: textColor }}>
+                            {available_spots < 0 ? '0 spots available' : `${available_spots} spots available`}
+                          </div>
+                          <div className="car-count">
+                            {lot.occupied_spots > lot.total_spots ? 'Lot Full' : `${lot.occupied_spots} cars parked`}
+                          </div>
+                          <button className='see-details-button' onClick={() => handleLotClick(lot)}>See Details</button>
                         </div>
-                        <div className="car-count">
-                          {lot.occupied_spots} cars parked
-                        </div>
-                      </div>
-                    );
+                      );
                     })}
                   </div>
+                ) : (
+                  <MapView lots={sortedLots} onLotClick={handleLotClick} />
                 )}
               </div>
-                ) : (
-                  <div className="detail-view">
+            ) : (
+              <>
+                <div className="detail-view">
                   <button className="back-button" onClick={handleBack}>
                     ← Back to All Lots
                   </button>
+
                   {isAdmin && (
                     <div>
                       <button className='add-photo-button' onClick={handlePhotoUploadClick}>
@@ -370,47 +387,78 @@ const App = () => {
                         onChange={handlePhotoSelected}
                       />
                     </div>
-
                   )}
+
                   <h1>{selectedLot?.name}</h1>
+
                   <div className='name-details'>
                     <p>{selectedLot?.subtitle}</p>
-                    <a href={`https://www.google.com/maps?q=${selectedLot.latitude},${selectedLot.longitude}`} target='_blank' rel='noopener noreferrer' className='map-link'>
-                    <img src={pinIcon} alt="Open in Maps" className='map-pin-icon'></img>
+                    <a
+                      href={`https://www.google.com/maps?q=${selectedLot.latitude},${selectedLot.longitude}`}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                      className='map-link'
+                    >
+                      <img src={pinIcon} alt="Open in Maps" className='map-pin-icon' />
                     </a>
                   </div>
+
                   <div className="lot-details">
                     <div className="occupancy-bar-container">
-                    {(selectedLot?.total_spots) - (selectedLot?.occupied_spots)} / {(selectedLot?.total_spots)} spots available
-                    <div className="occupancy-bar">
-                      <div
-                      className="occupancy-filled"
-                      style={{
-                        width: `${(selectedLot?.occupied_spots / selectedLot?.total_spots) * 100}%`,
-                        backgroundColor: ((selectedLot?.total_spots - selectedLot?.occupied_spots) / selectedLot?.total_spots) * 100 < 5 ? '#ee2c24' : ((selectedLot?.total_spots - selectedLot?.occupied_spots) / selectedLot?.total_spots) * 100 < 25 ? '#f4c217' : '#43a047'
-                      }}
-                      ></div>
+                      {((selectedLot?.total_spots - selectedLot?.occupied_spots) < 0
+                        ? `0 / ${selectedLot?.total_spots}`
+                        : `${selectedLot?.total_spots - selectedLot?.occupied_spots} / ${selectedLot?.total_spots}`)} spots available
+                      <div className="occupancy-bar">
+                        <div
+                          className="occupancy-filled"
+                          style={{
+                            width: `${(selectedLot?.occupied_spots / selectedLot?.total_spots) * 100}%`,
+                            backgroundColor:
+                              ((selectedLot?.total_spots - selectedLot?.occupied_spots) / selectedLot?.total_spots) * 100 < 5
+                                ? '#ee2c24'
+                                : ((selectedLot?.total_spots - selectedLot?.occupied_spots) / selectedLot?.total_spots) * 100 < 25
+                                ? '#f4c217'
+                                : '#43a047'
+                          }}
+                        ></div>
+                      </div>
                     </div>
-                  </div>
-                  <div className="lastUpdate">
-                    {getTimeAgo(selectedLot.last_updated)}
+
+                    <div className="lastUpdate">
+                      {getTimeAgo(selectedLot.last_updated)}
                     </div>
+
+                    {/* <div className="map-container" style={{ width: '100%', height: 600 }}>
+                      <iframe
+                        id="ut_map"
+                        ref={mapRef}
+                        title="Utah Tech Campus Map"
+                        src={`https://maps.utahtech.edu/`}
+                        width="100%"
+                        height="100%"
+                        allowFullScreen={false}
+                        loading="lazy"
+                        style={{ border: 'none' }}
+                      />
+                    </div> */}
                   </div>
                 </div>
-                )}
+                </>
+            )}
                 <div className="footer">
-
                   <p>Love it or hate it?</p>
                   <a href="https://forms.gle/L4bjuXgSr434B9oX8">
                     <button className="survey-button">Leave Feedback</button>
                   </a>
-              <p>
-                Made with <span role='img' aria-label='heart emoji'>❤️</span> by <a href="https://github.com/Spoomn" style={{ textDecoration: "none" }}>Spoomn</a> Inc.
-              </p>
-            </div>
+                  <p>
+                    Made with <span role='img' aria-label='heart emoji'>❤️</span> by <a href="https://github.com/Spoomn" style={{ textDecoration: "none" }}>Spoomn</a> Inc.
+                  </p>
+                </div>
+              
           </div>
         </CSSTransition>
       </SwitchTransition>
+
     </div>
   );
 };

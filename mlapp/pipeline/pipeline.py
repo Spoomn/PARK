@@ -31,41 +31,40 @@ def connect_with_connector():
     return conn
 
 def update_parking_lot(lot_name, vehicle_count):
-    formatted_lot_name = format_lot_name(lot_name)
     current_time = datetime.now(timezone.utc).isoformat()
 
     try:
         conn = connect_with_connector()
         cur = conn.cursor()
 
-        cur.execute("SELECT COUNT(*) FROM parking_lots WHERE name = %s;", (formatted_lot_name,))
+        cur.execute("SELECT COUNT(*) FROM parking_lots WHERE name = %s;", (lot_name,))
         exists = cur.fetchone()[0] > 0
 
         if not exists:
-            print(f"⚠️ Parking lot '{formatted_lot_name}' not found in database.")
+            print(f"⚠️ Parking lot '{lot_name}' not found in database.")
             cur.execute(
                 "INSERT INTO parking_lots (name, occupied_spots, last_updated) "
                 "VALUES (%s, %s, %s);", 
-                (formatted_lot_name, vehicle_count, current_time)
+                (lot_name, vehicle_count, current_time)
             )
-            print(f"✅ Created new parking lot: {formatted_lot_name}")
+            print(f"✅ Created new parking lot: {lot_name}")
 
         update_query = """
         UPDATE parking_lots 
         SET occupied_spots = %s, last_updated = %s
         WHERE name = %s;
         """
-        cur.execute(update_query, (vehicle_count, current_time, formatted_lot_name))
+        cur.execute(update_query, (vehicle_count, current_time, lot_name))
         conn.commit()
         
         # error check
         if cur.rowcount == 0:
-            print(f"⚠️ No rows updated! Check if parking lot '{formatted_lot_name}' exists.")
+            print(f"⚠️ No rows updated! Check if parking lot '{lot_name}' exists.")
         else:
-            print(f"✅ Updated parking lot '{formatted_lot_name}' with {vehicle_count} occupied spots.")
+            print(f"✅ Updated parking lot '{lot_name}' with {vehicle_count} occupied spots.")
 
         # query the database to confirm the update
-        cur.execute("SELECT occupied_spots FROM parking_lots WHERE name = %s;", (formatted_lot_name,))
+        cur.execute("SELECT occupied_spots FROM parking_lots WHERE name = %s;", (lot_name,))
         updated_value = cur.fetchone()[0]
         if updated_value != vehicle_count:
             raise Exception(f"Verification failed: Expected {vehicle_count} but got {updated_value}")
@@ -77,6 +76,7 @@ def update_parking_lot(lot_name, vehicle_count):
 
     except Exception as e:
         print(f"Database update failed: {e}")
+
 
 def download_blob(bucket_name, source_blob_name, destination_file_name):
     storage_client = storage.Client()
@@ -123,14 +123,17 @@ def get_latest_image_path(bucket_name):
     print(f"✅ Latest image found: {latest_image_path}")
     return f"gs://{bucket_name}/{image_name}"
 
+
 def format_lot_name(lot_name):
     return lot_name.replace("_", " ").replace("-", " ").title().strip()
+
 
 def extract_lot_name(gcs_path):
     parts = gcs_path.split('/')
     if len(parts) >= 4:
         return parts[3]
     return None
+
 
 def main(model_path_gcs):
     print("🚀 Starting pipeline...")
@@ -151,7 +154,6 @@ def main(model_path_gcs):
     formatted_lot_name = format_lot_name(lot_name)
     print("Found Lot Name: ", formatted_lot_name)
     
-
     # Step 2: Temporary files for image and get model
     model_extension = os.path.splitext(model_path_gcs)[-1]
     temp_model = tempfile.NamedTemporaryFile(delete=False, suffix=model_extension)
