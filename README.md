@@ -3,6 +3,11 @@
 
 An AI-powered, full-stack smart parking availability application designed for any parking lot. This system uses real-time machine vision to collect parking data and update a database. The app displays available parking in a user-friendly interactive web app.
 
+
+[Live App HERE](https://vision-447321.web.app/)
+
+ ![alt text](park.png)
+ 
 ## Project Overview
 
 Finding parking on campus can be frustrating. My goal is to simplify that process by providing students and faculty with **real-time updates on parking availability** across campus lots.
